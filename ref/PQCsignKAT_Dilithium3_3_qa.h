@@ -1,5 +1,3 @@
-# Dilithium3
-
 testVectorRec test_vector[] ={
 
 {.count = 1,

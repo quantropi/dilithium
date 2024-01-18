@@ -61,7 +61,7 @@ main()
         return KAT_FILE_OPEN_ERROR;
     }
     //added for QA test header output file
-    sprintf(fn_rsp_qa, "PQCsignKAT_%.16s_qa.h", CRYPTO_ALGNAME);
+    sprintf(fn_rsp_qa, "PQCsignKAT_%.16s_%d_qa.h", CRYPTO_ALGNAME, ALGO);
     if ( (fp_rsp_qa = fopen(fn_rsp_qa, "w")) == NULL ) {
         printf("Couldn't open <%s> for write\n", fn_rsp_qa);
         return KAT_FILE_OPEN_ERROR;
@@ -95,7 +95,6 @@ main()
 
     fprintf(fp_rsp, "# %s\n\n", CRYPTO_ALGNAME);
     //added for QA test header output file
-    fprintf(fp_rsp_qa, "# %s\n\n", CRYPTO_ALGNAME);
     fprintf(fp_rsp_qa, "testVectorRec test_vector[] ={\n\n");
     //end
     done = 0;
@@ -167,7 +166,7 @@ main()
 
         //added for QA test header output file
         fprintf(fp_rsp_qa, "{.count = %d,\n", count+1);
-        fprintf(fp_rsp_qa, ".algorithmID = LEVEL%d,\n", DILITHIUM_MODE);
+        fprintf(fp_rsp_qa, ".algorithmID = LEVEL%d,\n", ALGO);
 
         str = malloc(48*8); 
 		qa_hex_to_str(seed,48,str);

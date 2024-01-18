@@ -184,17 +184,17 @@ test/test_mul: test/test_mul.c randombytes.c $(KECCAK_SOURCES) $(KECCAK_HEADERS)
 
 PQCgenKAT_sign2: PQCgenKAT_sign_qa.c rng.c rng.h $(KECCAK_SOURCES) \
   $(KECCAK_HEADERS)
-	$(CC) $(NISTFLAGS) -DDILITHIUM_MODE=2 \
+	$(CC) $(NISTFLAGS) -DDILITHIUM_MODE=2 -DALGO=1 \
 	  -o $@ $< rng.c $(KECCAK_SOURCES) $(LDFLAGS) -lcrypto
 
 PQCgenKAT_sign3: PQCgenKAT_sign_qa.c rng.c rng.h $(KECCAK_SOURCES) \
   $(KECCAK_HEADERS)
-	$(CC) $(NISTFLAGS) -DDILITHIUM_MODE=3 \
+	$(CC) $(NISTFLAGS) -DDILITHIUM_MODE=3 -DALGO=3 \
 	  -o $@ $< rng.c $(KECCAK_SOURCES) $(LDFLAGS) -lcrypto
 
 PQCgenKAT_sign5: PQCgenKAT_sign_qa.c rng.c rng.h $(KECCAK_SOURCES) \
   $(KECCAK_HEADERS)
-	$(CC) $(NISTFLAGS) -DDILITHIUM_MODE=5 \
+	$(CC) $(NISTFLAGS) -DDILITHIUM_MODE=5 -DALGO=5 \
 	  -o $@ $< rng.c $(KECCAK_SOURCES) $(LDFLAGS) -lcrypto
 
 PQCgenKAT_sign2aes: PQCgenKAT_sign.c rng.c rng.h $(AES_SOURCES) \
