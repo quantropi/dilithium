@@ -182,6 +182,23 @@ main()
 
         fprintf(fp_rsp_qa, ".msgLen = %lu,\n", mlen);
 
+        str = malloc(CRYPTO_PUBLICKEYBYTES*8); 
+		qa_hex_to_str(pk,CRYPTO_PUBLICKEYBYTES,str);
+        fprintf(fp_rsp_qa, ".pk = (unsigned char *) \"%s\",\n", str);
+        free(str);
+
+		str = malloc(CRYPTO_SECRETKEYBYTES*8); 
+		qa_hex_to_str(sk,CRYPTO_SECRETKEYBYTES,str);
+        fprintf(fp_rsp_qa, ".sk = (unsigned char *) \"%s\",\n", str);
+        free(str);
+
+        str = malloc(smlen*8); 
+		qa_hex_to_str(sm,smlen,str);
+        fprintf(fp_rsp_qa, ".sm = (unsigned char *) \"%s\",\n", str);
+        free(str);
+
+        fprintf(fp_rsp_qa, ".smLen = %lu,\n", smlen);
+
         fprintf(fp_rsp_qa, ".api_rv = MASQ_SUCCESS\n");
         fprintf(fp_rsp_qa, "},\n");
         //end
