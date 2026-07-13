@@ -39,11 +39,11 @@ void polyvecl_uniform_eta(polyvecl *v, const uint8_t seed[CRHBYTES], uint16_t no
     poly_uniform_eta(&v->vec[i], seed, nonce++);
 }
 
-void polyvecl_uniform_gamma1(polyvecl *v, const uint8_t seed[CRHBYTES], uint16_t nonce) {
+void polyvecl_uniform_gamma1(polyvecl *v, const uint8_t seed[CRHBYTES], uint32_t nonce) {
   unsigned int i;
 
   for(i = 0; i < L; ++i)
-    poly_uniform_gamma1(&v->vec[i], seed, L*nonce + i);
+    poly_uniform_gamma1(&v->vec[i], seed, nonce + i);
 }
 
 void polyvecl_reduce(polyvecl *v) {

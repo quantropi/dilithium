@@ -19,6 +19,15 @@ void dilithium_shake256_stream_init(keccak_state *state,
                                     const uint8_t seed[CRHBYTES],
                                     uint16_t nonce);
 
+/* NEW: For 4-byte nonce (gamma1 only) */
+#define dilithium_shake256_stream_init_gamma1 DILITHIUM_NAMESPACE(dilithium_shake256_stream_init_gamma1)
+void dilithium_shake256_stream_init_gamma1(keccak_state *state,
+                                           const uint8_t seed[SEEDBYTES],
+                                           const uint8_t nonce[4]);
+
+#define stream256_init_gamma1(STATE, SEED, NONCE) \
+        dilithium_shake256_stream_init_gamma1(STATE, SEED, NONCE)
+
 #define STREAM128_BLOCKBYTES SHAKE128_RATE
 #define STREAM256_BLOCKBYTES SHAKE256_RATE
 

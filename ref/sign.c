@@ -92,9 +92,12 @@ int crypto_sign_signature_internal(uint8_t *sig,
                                    const uint8_t *sk)
 {
   unsigned int n;
+  *siglen = 0;
   uint8_t seedbuf[2*SEEDBYTES + TRBYTES + 2*CRHBYTES];
   uint8_t *rho, *tr, *key, *mu, *rhoprime;
-  uint16_t nonce = 0;
+  uint32_t nonce = 0;
+  uint32_t attempt = 0;                     /* NEW: tracks total attempts, independent of nonce wraparound */
+  const uint32_t MAX_SIGN_ATTEMPTS = 100;  /* NEW: one full pass over the nonce space; tune if needed */
   polyvecl mat[K], s1, y, z;
   polyveck t0, s2, w1, w0, h;
   poly cp;
@@ -130,6 +133,10 @@ int crypto_sign_signature_internal(uint8_t *sig,
   polyveck_ntt(&t0);
 
 rej:
+  attempt++;                                          /* NEW */
+  if (attempt > MAX_SIGN_ATTEMPTS) {                   /* NEW */
+    return -1;   /* just return MASQ_DS_ERROR */
+  }
   /* Sample intermediate vector y */
   polyvecl_uniform_gamma1(&y, rhoprime, nonce++);
 
@@ -231,8 +238,8 @@ int crypto_sign_signature(uint8_t *sig,
     rnd[i] = 0;
 #endif
 
-  crypto_sign_signature_internal(sig,siglen,m,mlen,pre,2+ctxlen,rnd,sk);
-  return 0;
+  int ret = crypto_sign_signature_internal(sig,siglen,m,mlen,pre,2+ctxlen,rnd,sk);
+  return ret;
 }
 
 /*************************************************

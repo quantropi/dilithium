@@ -466,12 +466,20 @@ void poly_uniform_eta(poly *a,
 #define POLY_UNIFORM_GAMMA1_NBLOCKS ((POLYZ_PACKEDBYTES + STREAM256_BLOCKBYTES - 1)/STREAM256_BLOCKBYTES)
 void poly_uniform_gamma1(poly *a,
                          const uint8_t seed[CRHBYTES],
-                         uint16_t nonce)
+                         uint32_t nonce)
 {
   uint8_t buf[POLY_UNIFORM_GAMMA1_NBLOCKS*STREAM256_BLOCKBYTES];
   stream256_state state;
+  uint8_t nonce_bytes[4];
+  
+  /* Encode 32-bit nonce as 4 bytes (little-endian) */
+  nonce_bytes[0] = (uint8_t)((nonce >> 0) & 0xFF);
+  nonce_bytes[1] = (uint8_t)((nonce >> 8) & 0xFF);
+  nonce_bytes[2] = (uint8_t)((nonce >> 16) & 0xFF);
+  nonce_bytes[3] = (uint8_t)((nonce >> 24) & 0xFF);
 
-  stream256_init(&state, seed, nonce);
+  /* Use NEW macro for 4-byte nonce */
+  stream256_init_gamma1(&state, seed, nonce_bytes);  /* ← Changed macro */
   stream256_squeezeblocks(buf, POLY_UNIFORM_GAMMA1_NBLOCKS, &state);
   polyz_unpack(a, buf);
 }

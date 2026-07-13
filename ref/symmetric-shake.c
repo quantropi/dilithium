@@ -26,3 +26,14 @@ void dilithium_shake256_stream_init(keccak_state *state, const uint8_t seed[CRHB
   shake256_absorb(state, t, 2);
   shake256_finalize(state);
 }
+
+/* NEW: For 4-byte nonce (poly_uniform_gamma1 only) */
+void dilithium_shake256_stream_init_gamma1(keccak_state *state,
+                                           const uint8_t seed[SEEDBYTES],
+                                           const uint8_t nonce[4])
+{
+  shake256_init(state);
+  shake256_absorb(state, seed, SEEDBYTES);
+  shake256_absorb(state, nonce, 4);
+  shake256_finalize(state);
+}
